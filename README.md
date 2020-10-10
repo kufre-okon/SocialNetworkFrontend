@@ -1,1 +1,1 @@
-This is a social network application created with reactjs.
+## This is a frontend of the social network application created with reactjs.
