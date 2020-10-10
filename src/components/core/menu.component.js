@@ -41,40 +41,29 @@ const Menu = ({ history }) => {
                     </Link>
                     </li>
 
-                    {authService.isAuthenticated() && authService.isAuthenticated().user.role === 'admin' && (
+                    {authService.isAuthenticated() && authService.getCurrentUser().role === 'admin' && (
                         <li className={isActive(history, '/admin')}>
                             <Link to={`/admin`} className="nav-link">
                                 Admin
                     </Link>
                         </li>
                     )}
-
-                    {authService.isAuthenticated() && (
-                        <React.Fragment>
-                            <li className={isActive(history, '/findpeople')}>
-                                <Link to="/findpeople" className="nav-link">
-                                    Find People
-                            </Link>
-                            </li>
-                        </React.Fragment>
-                    )}
                 </ul>
             </div>
-            <form className="form-inline">
-                <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                <button type="submit" className="btn btn-outline-light my-2 my-sm-0">Search</button>
-            </form>
             <form className="form-inline ml-5">
                 {authService.isAuthenticated() && (
                     <React.Fragment>
                         <b className="text-warning">Welcome</b>
                         <div className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle text-warning" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                                {authService.isAuthenticated().user.lastName}
+                                {authService.getCurrentUser().lastName}
                             </a>
                             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <Link to={`/user/${authService.isAuthenticated().user.id}`} className="dropdown-item">
-                                    <i className="fa fa-user"></i>{""}Profile
+                                <Link to={`/user/${authService.getCurrentUser().id}`} className="dropdown-item">
+                                    <i className="fa fa-user"></i>{" "}Profile
+                                </Link>
+                                <Link to={'/user/changepassword'} className="dropdown-item">
+                                    <i className="fa fa-gear"></i>{" "}Change Password
                                 </Link>
                                 <div className="dropdown-divider"></div>
                                 <a className="dropdown-item" href="#" onClick={logout}>

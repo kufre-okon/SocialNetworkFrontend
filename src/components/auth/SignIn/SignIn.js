@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import authService from '../../../services/auth.service';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const displayValidationMsg = (message) => {
   return (
@@ -32,7 +33,8 @@ const SignIn = (props) => {
     setIsLoading(true);
 
     authService.signIn(form.login, form.password).then((data) => {
-      authService.setCurrentUser(data.payload);
+      authService.setCurrentUser(data.payload.user);
+      authService.setLoginToken(data.payload.accessToken);
       props.history.push('/');
     }).catch((err) => {
       let respMsg = err.data.message;
@@ -81,10 +83,13 @@ const SignIn = (props) => {
                   <button type="submit"
                     className="btn btn-primary btn-sm btn-raised" disabled={isLoading}>
                     {isLoading && (
-                      <span className="spinner-border spinner-border-sm"></span> 
+                      <span className="spinner-border spinner-border-sm"></span>
                     )}
                     <span>Login</span>
                   </button>
+                  <p>
+                    <Link to={"/forgotpassword"}>Forgot Password</Link>
+                  </p>
                 </div>
 
                 {errorMessage && (
@@ -93,6 +98,8 @@ const SignIn = (props) => {
                   </div>
                 )}
               </form>
+              <hr />
+              <SocialLogin />
             </div>
           </div>
         </div>

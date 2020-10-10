@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styles from './SignUp.module.css';
 import { useForm } from 'react-hook-form';
 import authService from '../../../services/auth.service';
 import { Link } from 'react-router-dom';

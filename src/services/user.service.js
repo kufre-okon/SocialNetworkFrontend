@@ -1,36 +1,34 @@
 import http from '../http-common';
-import Storage from '../utils/storage.util';
 
-const signIn = (usernameOrEmail, password) => {
-    return http.post('/auth/signin', { login: usernameOrEmail, password });
+const getUser = (userId) => {
+    return http.get(`/users/${userId}`);
 }
 
-const signUp = (form) => {
-    return http.post('/auth/signup', form);
+const getAllUsers = (page, pageSize) => {
+    return http.get(`/users?page=${page}&pageSize=${pageSize}`);
 }
 
-const getCurrentUser = () => {
-    let user = Storage.getItem('currentuser');
-    return user;
-}
-const setCurrentUser = (user) => {
-    Storage.setItem('currentuser', user);
+const update = (id, formData) => {
+    return http.put(`/users/${id}`, formData);
 }
 
-const signOut = () => {
-    Storage.removeItem('currentuser');
+const follow = (userId, followId) => {
+    return http.put(`/users/${userId}/follow`, { userId, followId });
 }
 
-const isAuthenticated = () => {
-    let user = getCurrentUser();
-    return !user ? false : user;
+const unfollow = (userId, unfollowId) => {
+    return http.put(`/users/${userId}/unfollow`, { userId, unfollowId });
+}
+
+const getAvatar = (userId) => {
+    return http.get(`/${userId}/avatar`);
 }
 
 export default {
-    signIn,
-    getCurrentUser,
-    signOut,
-    isAuthenticated,
-    setCurrentUser,
-    signUp
+    getUser,
+    getAllUsers,
+    update,
+    follow,
+    unfollow,
+    getAvatar
 }

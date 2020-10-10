@@ -13,17 +13,44 @@ const getCurrentUser = () => {
     let user = Storage.getItem('currentuser');
     return user;
 }
+
+const getLoginToken = () => {
+    let token = Storage.getItem('logintoken');
+    return token;
+}
+
+const setLoginToken = (token) => {
+    Storage.setItem('logintoken', token);
+}
+
 const setCurrentUser = (user) => {
     Storage.setItem('currentuser', user);
 }
 
 const signOut = () => {
     Storage.removeItem('currentuser');
+    Storage.removeItem('logintoken');
 }
 
 const isAuthenticated = () => {
-    let user = getCurrentUser();
-    return !user ? false : user;
+    let token = getLoginToken();
+    return !!token;
+}
+
+const forgotPassword = (email) => {
+    return http.post('/auth/forgotpassword', { email });
+}
+
+const resetpassword = (resetPasswordToken, newPassword) => {
+    return http.post('/auth/resetpassword', { resetPasswordToken, newPassword });
+}
+
+const changePassword = (userId, oldPassword, newPassword) => {
+    return http.post('/auth/changepassword', { userId, oldPassword, newPassword });
+}
+
+const socialLogin = (user) => {
+    return http.post('/auth/sociallogin', user);
 }
 
 export default {
@@ -32,5 +59,11 @@ export default {
     signOut,
     isAuthenticated,
     setCurrentUser,
-    signUp
+    setLoginToken,
+    getLoginToken,
+    signUp,
+    forgotPassword,
+    resetpassword,
+    changePassword,
+    socialLogin
 }

@@ -1,10 +1,8 @@
 import Axios from "axios";
-import AppConfig from './config';
 import Storage from './utils/storage.util';
 
-
 let axios = Axios.create({
-    baseURL: AppConfig.BASE_API_URL,
+    baseURL: process.env.REACT_APP_BASE_API_URL,
     headers: {
         Accept: 'application/json',
         "Content-type": "application/json"
@@ -12,13 +10,13 @@ let axios = Axios.create({
 });
 
 axios.interceptors.request.use((request) => {
-    let user = Storage.getItem('currentuser');
-    if (user) {
+    let logintoken = Storage.getItem('logintoken');
+    if (logintoken) {
         request.headers = Object.assign({}, request.headers, {
-            "Authorization": 'Bearer ' + user.accessToken
+            "Authorization": 'Bearer ' + logintoken
         })
     }
-    console.log(request);
+    // console.log(request);
     return request;
 })
 
@@ -39,6 +37,9 @@ axios.interceptors.response.use((response) => {
     }
     else if (error.message)
         errObj.data.message = error.message;
+
+    if (errObj.status === 401)
+        window.location = "/signIn";
     return Promise.reject(errObj);
 });
 

@@ -1,6 +1,10 @@
-.error-feedback {   
+.error-feedback {
     width: 100%;
     margin-top: .25rem;
-    font-size: 80%;
+    font-size: 1em;
     color: #f44336;
+}
+
+.view-spacer {
+    margin-top: 2em;
 }
