@@ -8,7 +8,7 @@ const SocialLogin = (props) => {
   const [loginSuccess, setLoginSuccess] = useState(false);
 
   const responseGoogle = (response) => {
-
+    console.log(response);
     const { email, familyName, givenName, googleId, imageUrl } = response.profileObj;
 
     const user = {
