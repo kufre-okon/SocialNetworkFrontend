@@ -11,12 +11,13 @@ const Posts = (props) => {
 
   const { posts, deletePost = (p) => p } = props;
   const currentUser = authService.getCurrentUser();
+  const isLoggedIn = authService.isAuthenticated();
 
   return (
     <React.Fragment>
       {
         posts.map((post, i) => {
-          const createdByMe = post.postedBy && post.postedBy.id === currentUser.id;
+          const createdByMe = isLoggedIn && post.postedBy && post.postedBy.id === currentUser.id;
           return (
             <div key={i} className="mb-2 d-flex flex-row justify-content-between align-items-center" >
               <Link to={`/post/${post.id}`}>
@@ -95,32 +96,25 @@ const Profile = (props) => {
     init(props.match.params.userId);
   }, [props.match.params.userId])
 
-  const init = (userId) => {
+  const init = async (userId) => {
     setIsLoading(true);
-    userService.getUser(userId).then((data) => {
+    try {
+      let data = await userService.getUser(userId);
       setUser(data.payload);
       setUserFollowing(data.payload.following);
-      loadPost(data.payload.id);
+      await loadPost(data.payload.id);
       setIsSelf(isLoggedIn && currentUser.id === data.payload.id);
-    }).catch((err) => {
+    }
+    catch (err) {      
       let msg = err.data.message;
       setErrorMessage(msg);
-    }).finally(() => {
-      setIsLoading(false);
-    })
+    }
+    setIsLoading(false);
   }
 
-  const loadPost = (userId) => {
-    setIsLoading(true);
-    postService.search(1, 20, userId).then((response) => {
-      console.log(response.payload.items)
-      setPosts(response.payload.items)
-    }).catch((err) => {
-      let msg = err.data.message;
-      setErrorMessage(msg);
-    }).finally(() => {
-      setIsLoading(false);
-    })
+  const loadPost = async (userId) => {
+    let data = await postService.search(1, 20, userId);
+    setPosts(data.payload.items);
   }
 
   const deletePost = (postId) => {
