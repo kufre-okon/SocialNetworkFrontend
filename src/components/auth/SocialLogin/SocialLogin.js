@@ -7,8 +7,12 @@ const SocialLogin = (props) => {
 
   const [loginSuccess, setLoginSuccess] = useState(false);
 
-  const responseGoogle = (response) => {
+  const responseGoogleFailure = (response) => {
     console.log(response);
+  }
+
+  const responseGoogle = (response) => {
+
     const { email, familyName, givenName, googleId, imageUrl } = response.profileObj;
 
     const user = {
@@ -37,10 +41,10 @@ const SocialLogin = (props) => {
         )
       }
       <GoogleLogin
-        clientId="619264673724-u4og9aoj0r1hlj04p49cpitrekdppca3.apps.googleusercontent.com"
+        clientId="619264673724-i64vpkj1plsq3b5utsa59ulvpmqnecij.apps.googleusercontent.com"
         buttonText="Login with Google"
         onSuccess={responseGoogle}
-        onFailure={responseGoogle}
+        onFailure={responseGoogleFailure}
       />
     </>
   )
